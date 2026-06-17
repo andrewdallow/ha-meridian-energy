@@ -11,7 +11,7 @@ on:
     branches:
       - "main"
 permissions:
-	  contents: read
+    contents: read
 jobs:
   hassfest: # https://developers.home-assistant.io/blog/2020/04/16/hassfest
     name: "Hassfest Validation"
