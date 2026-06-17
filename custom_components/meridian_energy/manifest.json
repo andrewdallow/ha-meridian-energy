@@ -12,5 +12,7 @@
 	"iot_class": "cloud_polling",
 	"issue_tracker": "https://github.com/codyc15/ha-meridian-energy/issues",
 	"requirements": [],
+	"homeassistant": ">=2026.2",
+	"python_requires": ">=3.14",
 	"version": "1.2.0"
 }

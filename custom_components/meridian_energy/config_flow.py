@@ -8,7 +8,6 @@ import voluptuous as vol
 from .const import DOMAIN, SENSOR_NAME
 
 
-@config_entries.HANDLERS.register(DOMAIN)
 class MeridianConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Define the config flow."""
 

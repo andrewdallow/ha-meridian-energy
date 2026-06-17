@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
+# cd to repo root
 cd "$(dirname "$0")/.."
 
-python3 -m pip install --requirement requirements.txt
+# Prefer python3.14 if available, otherwise fall back to python3
+PYTHON=$(command -v python3.14 || command -v python3)
+
+"$PYTHON" -m pip install --upgrade pip
+"$PYTHON" -m pip install --requirement requirements.txt

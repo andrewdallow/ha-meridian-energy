@@ -6,12 +6,8 @@ import csv
 from io import StringIO
 from pytz import timezone
 import logging
-import voluptuous as vol
-
-import homeassistant.helpers.config_validation as cv
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
-from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 from homeassistant.components.sensor import SensorEntity
 
@@ -40,9 +36,7 @@ If you have any issues with this you need to open an issue here:
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {vol.Required(CONF_EMAIL): cv.string, vol.Required(CONF_PASSWORD): cv.string}
-)
+# YAML platform configuration is deprecated for this integration; config_flow is used instead.
 
 SCAN_INTERVAL = timedelta(hours=3)
 
@@ -61,8 +55,7 @@ async def async_setup_entry(
 
     _LOGGER.debug("Setting up sensor(s)...")
 
-    sensors = []
-    sensors.append(MeridianEnergyUsageSensor(SENSOR_NAME, api))
+    sensors = [MeridianEnergyUsageSensor(SENSOR_NAME, api)]
     async_add_entities(sensors, True)
 
 
@@ -70,7 +63,7 @@ class MeridianEnergyUsageSensor(SensorEntity):
     """Define Meridian Energy Usage sensor."""
 
     def __init__(self, name, api):
-        """Intialise Meridian Energy Usage sensor."""
+        """Initialise Meridian Energy Usage sensor."""
         self._name = name
         self._icon = "mdi:meter-electric"
         self._state = 0
@@ -103,24 +96,21 @@ class MeridianEnergyUsageSensor(SensorEntity):
         """Return the unique id."""
         return self._unique_id
 
-    def update(self):
-        """Update the sensor data."""
+    async def async_update(self) -> None:
+        """Asynchronously update the sensor data."""
         _LOGGER.debug("Beginning usage update")
 
-        solarStatistics = []
-        solarRunningSum = 0
+        day_statistics = []
+        day_running_sum = 0
 
-        dayStatistics = []
-        dayRunningSum = 0
+        night_statistics = []
+        night_running_sum = 0
 
-        nightStatistics = []
-        nightRunningSum = 0
+        # Login to the website (blocking IO) — run in executor
+        await self.hass.async_add_executor_job(self._api.token)
 
-        # Login to the website
-        self._api.token()
-
-        # Get the latest usage data
-        response = self._api.get_data()
+        # Get the latest usage data (blocking IO) — run in executor
+        response = await self.hass.async_add_executor_job(self._api.get_data)
 
         # Process the CSV consumption file
         csv_file = csv.reader(StringIO(response))
@@ -170,49 +160,28 @@ class MeridianEnergyUsageSensor(SensorEntity):
             # Only calculate the energy after all checks are complete
             unit_quantity_active_energy_volume = row[12]
 
-            # Process solar export channels
-            if energy_flow_direction == "I":
-                solarRunningSum = solarRunningSum + float(
+            # Night rate channel
+            if (
+                start_date.hour >= 21 or
+                start_date.hour <= 6
+            ):
+                night_running_sum = night_running_sum + float(
                     unit_quantity_active_energy_volume
                 )
-                solarStatistics.append(
-                    StatisticData(start=rounded_date, sum=solarRunningSum)
+                night_statistics.append(
+                    StatisticData(start=rounded_date, sum=night_running_sum)
                 )
 
-            # Process regular channels
+            # Day rate channel
             else:
-                # Night rate channel
-                if (
-                    start_date.hour >= 21 or
-                    start_date.hour <= 6
-                ):
-                    nightRunningSum = nightRunningSum + float(
-                        unit_quantity_active_energy_volume
-                    )
-                    nightStatistics.append(
-                        StatisticData(start=rounded_date, sum=nightRunningSum)
-                    )
+                day_running_sum = day_running_sum + float(
+                    unit_quantity_active_energy_volume
+                )
+                day_statistics.append(
+                    StatisticData(start=rounded_date, sum=day_running_sum)
+                )
 
-                # Day rate channel
-                else:
-                    dayRunningSum = dayRunningSum + float(
-                        unit_quantity_active_energy_volume
-                    )
-                    dayStatistics.append(
-                        StatisticData(start=rounded_date, sum=dayRunningSum)
-                    )
-
-        solarMetadata = StatisticMetaData(
-            has_mean=False,
-            has_sum=True,
-            name=f"{SENSOR_NAME} (Solar Export)",
-            source=DOMAIN,
-            statistic_id=f"{DOMAIN}:return_to_grid",
-            unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
-        )
-        async_add_external_statistics(self.hass, solarMetadata, solarStatistics)
-
-        dayMetadata = StatisticMetaData(
+        day_metadata = StatisticMetaData(
             has_mean=False,
             has_sum=True,
             name=f"{SENSOR_NAME} (Day)",
@@ -220,9 +189,9 @@ class MeridianEnergyUsageSensor(SensorEntity):
             statistic_id=f"{DOMAIN}:consumption_day",
             unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         )
-        async_add_external_statistics(self.hass, dayMetadata, dayStatistics)
+        async_add_external_statistics(self.hass, day_metadata, day_statistics)
 
-        nightMetadata = StatisticMetaData(
+        night_metadata = StatisticMetaData(
             has_mean=False,
             has_sum=True,
             name=f"{SENSOR_NAME} (Night)",
@@ -230,4 +199,4 @@ class MeridianEnergyUsageSensor(SensorEntity):
             statistic_id=f"{DOMAIN}:consumption_night",
             unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         )
-        async_add_external_statistics(self.hass, nightMetadata, nightStatistics)
+        async_add_external_statistics(self.hass, night_metadata, night_statistics)

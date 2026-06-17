@@ -3,6 +3,7 @@
 # Meridian Energy integration for Home Assistant
 ![image](https://github.com/andrewdallow/ha-meridian-energy/assets/50791984/26e62938-ea81-4e7f-86a2-c5adf7da5d1f)
 
+Note: This project targets Python 3.14+. Use the provided `scripts/setup` which will prefer `python3.14` when available.
 ## Compatible plans
 
 * Consumer EV Plan (Day & Night rates, with Solar)
