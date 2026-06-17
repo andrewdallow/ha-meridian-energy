@@ -12,7 +12,11 @@ from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 from homeassistant.components.sensor import SensorEntity
 
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.components.recorder.models import StatisticData, StatisticMetaData
+from homeassistant.components.recorder.models import (
+    StatisticData,
+    StatisticMetaData,
+    StatisticMeanType,
+)
 from homeassistant.const import UnitOfEnergy
 from homeassistant.components.recorder.statistics import (
     async_add_external_statistics,
@@ -117,9 +121,9 @@ class MeridianEnergyUsageSensor(SensorEntity):
 
         for row in csv_file:
             # Accessing columns by index in each row
-            if len(row) < 2:  # Checking if there are at least two columns
-                _LOGGER.warning("Not enough columns in this row")
-                break
+            if len(row) < 13:  # Checking if there are at least 13 columns (indices 0-12)
+                _LOGGER.warning("Not enough columns in this row, expected at least 13")
+                continue
 
             if row[0] == "HDR":
                 _LOGGER.debug("HDR line arrived")
@@ -127,17 +131,14 @@ class MeridianEnergyUsageSensor(SensorEntity):
             elif row[0] == "DET":
                 _LOGGER.debug("DET line arrived")
 
-            # Row definitions from EIEP document 13A (https://www.ea.govt.nz/documents/182/EIEP_13A_Electricity_conveyed_information_for_consumers.pdf)
-            energy_flow_direction = row[6]
-
             # Skip any estimated reads
-            read_status = row[11]
+            read_status = row[11].strip()
             if read_status != "RD":
                 _LOGGER.debug("HDR line skipped as its estimated")
                 continue
 
             # Assuming row[9] contains the date in the format 'dd/mm/YYYY HH:MM:SS'
-            read_period_start_date_time = row[9]
+            read_period_start_date_time = row[9].strip()
 
             # Assuming tz is your timezone (e.g., pytz.timezone('Your/Timezone'))
             tz = timezone("Pacific/Auckland")
@@ -158,7 +159,7 @@ class MeridianEnergyUsageSensor(SensorEntity):
             rounded_date = start_date.replace(minute=0, second=0, microsecond=0)
 
             # Only calculate the energy after all checks are complete
-            unit_quantity_active_energy_volume = row[12]
+            unit_quantity_active_energy_volume = row[12].strip()
 
             # Night rate channel
             if (
@@ -183,20 +184,24 @@ class MeridianEnergyUsageSensor(SensorEntity):
 
         day_metadata = StatisticMetaData(
             has_mean=False,
+            mean_type=StatisticMeanType.NONE,
             has_sum=True,
             name=f"{SENSOR_NAME} (Day)",
             source=DOMAIN,
             statistic_id=f"{DOMAIN}:consumption_day",
             unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+            unit_class="energy"
         )
         async_add_external_statistics(self.hass, day_metadata, day_statistics)
 
         night_metadata = StatisticMetaData(
             has_mean=False,
+            mean_type=StatisticMeanType.NONE,
             has_sum=True,
             name=f"{SENSOR_NAME} (Night)",
             source=DOMAIN,
             statistic_id=f"{DOMAIN}:consumption_night",
             unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+            unit_class="energy"
         )
         async_add_external_statistics(self.hass, night_metadata, night_statistics)

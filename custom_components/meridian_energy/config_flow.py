@@ -15,7 +15,7 @@ class MeridianConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Show user form."""
-        if user_input is not None:
+        if user_input:
             return self.async_create_entry(
                 title=SENSOR_NAME,
                 data={

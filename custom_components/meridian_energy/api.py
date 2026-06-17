@@ -76,4 +76,4 @@ class MeridianEnergyApi:
             return data
         else:
             _LOGGER.error("Could not fetch consumption")
-            return data
+            return False
