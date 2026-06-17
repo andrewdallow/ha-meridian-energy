@@ -1,12 +1,4 @@
-colorlog==6.10.1
 pip>=26.0,<27.0
-ruff==0.15.17
 homeassistant==2026.6.3
 pytz==2026.2
 beautifulsoup4==4.15.0
-
-# Testing dependencies
-pytest
-pytest-asyncio
-pytest-cov
-pytest-mock
