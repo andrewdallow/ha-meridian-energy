@@ -152,7 +152,7 @@ class MeridianEnergyUsageSensor(SensorEntity):
                 continue
 
             # Localize the datetime object
-            start_date = tz.localize(start_date)
+            start_date = start_date.replace(tzinfo=tz)
 
             # Round down to the nearest hour as HA can only handle hourly
             rounded_date = start_date.replace(minute=0, second=0, microsecond=0)
