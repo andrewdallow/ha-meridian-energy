@@ -121,7 +121,7 @@ class MeridianEnergyUsageSensor(SensorEntity):
 
         for row in csv_file:
             # Accessing columns by index in each row
-            if len(row) < 13:  # Checking if there are at least 13 columns (indices 0-12)
+            if len(row) < 2:
                 _LOGGER.warning("Not enough columns in this row, expected at least 13")
                 continue
 
