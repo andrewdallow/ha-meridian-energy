@@ -10,7 +10,7 @@
 	],
 	"documentation": "https://github.com/andrewdallow/ha-meridian-energy",
 	"iot_class": "cloud_polling",
-	"issue_tracker": "https://github.com/codyc15/ha-meridian-energy/issues",
+	"issue_tracker": "https://github.com/andrewdallow/ha-meridian-energy/issues",
 	"requirements": [],
 	"homeassistant": ">=2026.6.3",
 	"python_requires": ">=3.14",
