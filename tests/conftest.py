@@ -1,6 +1,6 @@
 """Pytest configuration and fixtures."""
 
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 import requests
@@ -31,7 +31,7 @@ def config_entry():
 
 @pytest.fixture
 def mock_session():
-    """Return a mock requests.Session."""
+    """Return a mock request.Session."""
     session = Mock(spec=requests.Session)
     session.get = Mock()
     session.post = Mock()
@@ -62,7 +62,7 @@ DET,1,50001234,NZ,Z,1,,0,, 01/01/2026 12:00:00,RD,RD,0.8,,"""
 
 @pytest.fixture
 def mock_auth_token_html():
-    """Return HTML with authenticity token."""
+    """Return HTML with an authenticity token."""
     return """
     <html>
         <form>

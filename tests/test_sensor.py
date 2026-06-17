@@ -235,7 +235,7 @@ DET,1,50001234,NZ,Z,1,,0,, 01/01/2026 14:00:00,RD,RD,1.5,,"""
 
     @pytest.mark.asyncio
     async def test_date_rounding_to_hour(self, hass):
-        """Test that dates are rounded down to nearest hour."""
+        """Test that dates are rounded down to the nearest hour."""
         mock_api = Mock()
         sensor = MeridianEnergyUsageSensor(SENSOR_NAME, mock_api)
         sensor.hass = hass
@@ -338,7 +338,7 @@ class TestAsyncSetupEntry:
 
     @pytest.mark.asyncio
     async def test_async_setup_entry_creates_sensor(self, config_entry, hass):
-        """Test async_setup_entry creates sensor entity."""
+        """Test async_setup_entry creates a sensor entity."""
         mock_add_entities = AsyncMock()
 
         with patch("custom_components.meridian_energy.sensor.MeridianEnergyUsageSensor"):

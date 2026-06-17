@@ -63,7 +63,7 @@ class TestIntegrationSetup:
 
     @pytest.mark.asyncio
     async def test_async_reload_entry(self, hass, config_entry):
-        """Test reload entry calls unload and setup."""
+        """Test reload entry calls unloading and setup."""
         hass.config_entries.async_unload_platforms = AsyncMock(return_value=True)
         hass.config_entries.async_forward_entry_setups = AsyncMock(return_value=True)
 

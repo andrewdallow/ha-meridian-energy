@@ -31,7 +31,7 @@ class TestMeridianConfigFlow:
             CONF_PASSWORD: "test_password",
         }
 
-        result = await config_flow.async_step_user(user_input)
+        await config_flow.async_step_user(user_input)
 
         config_flow.async_create_entry.assert_called_once()
         call_args = config_flow.async_create_entry.call_args
@@ -42,11 +42,11 @@ class TestMeridianConfigFlow:
 
     @pytest.mark.asyncio
     async def test_async_step_user_without_input(self):
-        """Test async_step_user shows form without input."""
+        """Test async_step_user shows the form without input."""
         config_flow = MeridianConfigFlow()
         config_flow.async_show_form = Mock()
 
-        result = await config_flow.async_step_user(None)
+        await config_flow.async_step_user(None)
 
         config_flow.async_show_form.assert_called_once()
         call_args = config_flow.async_show_form.call_args
@@ -59,11 +59,11 @@ class TestMeridianConfigFlow:
 
     @pytest.mark.asyncio
     async def test_async_step_user_with_empty_input(self):
-        """Test async_step_user with empty input dict."""
+        """Test async_step_user with an empty input dict."""
         config_flow = MeridianConfigFlow()
         config_flow.async_show_form = Mock()
 
-        result = await config_flow.async_step_user({})
+        await config_flow.async_step_user({})
 
         config_flow.async_show_form.assert_called_once()
 

@@ -27,7 +27,7 @@ class TestMeridianEnergyApi:
 
     @patch("custom_components.meridian_energy.api.BeautifulSoup")
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_token_retrieval_success(self, mock_session_class, mock_soup):
+    def test_token_retrieval_success(self, mock_soup):
         """Test successful token retrieval."""
         api = MeridianEnergyApi("test@example.com", "password")
 
@@ -57,7 +57,7 @@ class TestMeridianEnergyApi:
         api.login.assert_called_once()
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_token_retrieval_failure(self, mock_session_class):
+    def test_token_retrieval_failure(self):
         """Test token retrieval with non-200 status."""
         api = MeridianEnergyApi("test@example.com", "password")
 
@@ -72,7 +72,7 @@ class TestMeridianEnergyApi:
         assert api._token is None
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_login_success(self, mock_session_class):
+    def test_login_success(self):
         """Test successful login."""
         api = MeridianEnergyApi("test@example.com", "test_password")
         api._token = "test_token"
@@ -95,7 +95,7 @@ class TestMeridianEnergyApi:
         assert call_args[1]["data"]["authenticity_token"] == "test_token"
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_login_failure(self, mock_session_class):
+    def test_login_failure(self):
         """Test failed login."""
         api = MeridianEnergyApi("test@example.com", "wrong_password")
         api._token = "test_token"
@@ -110,7 +110,7 @@ class TestMeridianEnergyApi:
         api._session.post.assert_called_once()
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_get_data_success(self, mock_session_class):
+    def test_get_data_success(self):
         """Test successful data retrieval."""
         api = MeridianEnergyApi("test@example.com", "password")
 
@@ -132,8 +132,8 @@ class TestMeridianEnergyApi:
         assert "download=true" in call_url
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_get_data_empty_response(self, mock_session_class):
-        """Test data retrieval with empty response."""
+    def test_get_data_empty_response(self):
+        """Test data retrieval with an empty response."""
         api = MeridianEnergyApi("test@example.com", "password")
 
         mock_response = Mock()
@@ -146,7 +146,7 @@ class TestMeridianEnergyApi:
         assert result is False
 
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_get_data_failure(self, mock_session_class):
+    def test_get_data_failure(self):
         """Test data retrieval failure."""
         api = MeridianEnergyApi("test@example.com", "password")
 
@@ -161,8 +161,8 @@ class TestMeridianEnergyApi:
 
     @patch("custom_components.meridian_energy.api.datetime")
     @patch("custom_components.meridian_energy.api.requests.Session")
-    def test_get_data_date_range(self, mock_session_class, mock_datetime):
-        """Test get_data constructs correct date range."""
+    def test_get_data_date_range(self, mock_datetime):
+        """Test get_data constructs the correct date range."""
         from datetime import datetime as dt
 
         api = MeridianEnergyApi("test@example.com", "password")
