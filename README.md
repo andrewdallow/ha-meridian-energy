@@ -1,7 +1,7 @@
 ![Company logo](https://github.com/home-assistant/brands/blob/87e2d7c60931ee822776d2204244ef3eff4d22cf/custom_integrations/meridian_energy/logo.png?raw=true)
 
 # Meridian Energy integration for Home Assistant
-![image](https://github.com/codyc1515/ha-meridian-energy/assets/50791984/26e62938-ea81-4e7f-86a2-c5adf7da5d1f)
+![image](https://github.com/andrewdallow/ha-meridian-energy/assets/50791984/26e62938-ea81-4e7f-86a2-c5adf7da5d1f)
 
 ## Compatible plans
 
@@ -17,7 +17,7 @@ Once installed, simply set-up from the `Devices and services` area. The first fi
 
 ### HACS (recommended)
 1. [Install HACS](https://hacs.xyz/docs/setup/download), if you did not already
-2. [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=codyc1515&repository=ha-meridian-energy&category=integration)
+2. [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=andrewdallow&repository=ha-meridian-energy&category=integration)
 3. Install the Meridian Energy integration
 4. Restart Home Assistant
 

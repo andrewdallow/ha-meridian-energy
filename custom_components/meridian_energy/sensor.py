@@ -27,7 +27,7 @@ from .api import MeridianEnergyApi
 from .const import DOMAIN, SENSOR_NAME
 
 NAME = DOMAIN
-ISSUEURL = "https://github.com/codyc1515/ha-meridian-energy/issues"
+ISSUEURL = "https://github.com/andrewdallow/ha-meridian-energy/issues"
 
 STARTUP = f"""
 -------------------------------------------------------------------

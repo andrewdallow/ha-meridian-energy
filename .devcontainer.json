@@ -1,5 +1,5 @@
 {
-    "name": "codyc1515/ha-meridian-energy",
+    "name": "andrewdallow/ha-meridian-energy",
     "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
