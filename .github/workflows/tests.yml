@@ -6,7 +6,9 @@ on:
   pull_request:
     branches: [ main, develop ]
 permissions:
+  code-quality: write
   contents: read
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -34,13 +36,10 @@ jobs:
         pytest tests/ -v --cov=custom_components/meridian_energy --cov-report=xml --cov-report=html
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
+      uses: actions/upload-code-coverage@v1
       if: always()
       with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+        file: coverage.xml
 
     - name: Archive test results
       if: always()
