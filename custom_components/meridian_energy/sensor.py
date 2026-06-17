@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import csv
 from io import StringIO
-from pytz import timezone
+from zoneinfo import ZoneInfo
 import logging
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
@@ -140,8 +140,7 @@ class MeridianEnergyUsageSensor(SensorEntity):
             # Assuming row[9] contains the date in the format 'dd/mm/YYYY HH:MM:SS'
             read_period_start_date_time = row[9].strip()
 
-            # Assuming tz is your timezone (e.g., pytz.timezone('Your/Timezone'))
-            tz = timezone("Pacific/Auckland")
+            tz = ZoneInfo("Pacific/Auckland")
 
             # Parse the date string into a datetime object
             start_date = datetime.strptime(
