@@ -121,8 +121,8 @@ class MeridianEnergyUsageSensor(SensorEntity):
 
         for row in csv_file:
             # Accessing columns by index in each row
-            if len(row) < 2:
-                _LOGGER.warning("Not enough columns in this row, expected at least 13")
+            if len(row) < 11:
+                _LOGGER.warning("Not enough columns in this row, expected at least 11")
                 continue
 
             if row[0] == "HDR":
