@@ -23,7 +23,7 @@ class MeridianEnergyApi:
         self._session = requests.Session()
 
     def token(self):
-        """Get token from the Meridian Energy API."""
+        """Get a token from the Meridian Energy API."""
         response = self._session.get(self._url_base)
 
         if response.status_code == 200:

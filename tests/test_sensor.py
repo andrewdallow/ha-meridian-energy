@@ -1,17 +1,14 @@
 """Tests for the sensor module."""
 
-import pytest
-from unittest.mock import Mock, AsyncMock, patch, MagicMock
-from datetime import datetime
-from pytz import timezone
-from io import StringIO
-import csv
+from unittest.mock import AsyncMock, Mock, patch
 
+import pytest
+
+from custom_components.meridian_energy.const import DOMAIN, SENSOR_NAME
 from custom_components.meridian_energy.sensor import (
     MeridianEnergyUsageSensor,
     async_setup_entry,
 )
-from custom_components.meridian_energy.const import DOMAIN, SENSOR_NAME
 
 
 def get_mock_call_args(call_obj):

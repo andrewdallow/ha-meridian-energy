@@ -1,7 +1,9 @@
 """Tests for the Meridian Energy API module."""
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import Mock, patch, MagicMock
+
 from custom_components.meridian_energy.api import MeridianEnergyApi
 
 
@@ -32,7 +34,9 @@ class TestMeridianEnergyApi:
         # Mock the session and response
         mock_response = Mock()
         mock_response.status_code = 200
-        mock_response.text = "<html><input name='authenticity_token' value='test_token'/></html>"
+        mock_response.text = (
+            "<html><input name='authenticity_token' value='test_token'/></html>"
+        )
 
         api._session.get = Mock(return_value=mock_response)
 
@@ -159,7 +163,7 @@ class TestMeridianEnergyApi:
     @patch("custom_components.meridian_energy.api.requests.Session")
     def test_get_data_date_range(self, mock_session_class, mock_datetime):
         """Test get_data constructs correct date range."""
-        from datetime import datetime as dt, timedelta
+        from datetime import datetime as dt
 
         api = MeridianEnergyApi("test@example.com", "password")
 
@@ -178,4 +182,3 @@ class TestMeridianEnergyApi:
         call_url = api._session.get.call_args[0][0]
         # Should contain today's date and 365 days ago
         assert "15/01/2026" in call_url
-

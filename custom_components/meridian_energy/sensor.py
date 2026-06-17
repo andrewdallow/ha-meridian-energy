@@ -51,7 +51,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
     discovery_info=None,
 ):
-    """Asynchronously set-up the entry."""
+    """Asynchronously set up the entry."""
     email = entry.data.get(CONF_EMAIL)
     password = entry.data.get(CONF_PASSWORD)
 

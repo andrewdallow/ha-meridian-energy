@@ -1,12 +1,13 @@
 """Tests for the config flow module."""
 
+from unittest.mock import Mock
+
 import pytest
-from unittest.mock import Mock, patch
-from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 import voluptuous as vol
+from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 
 from custom_components.meridian_energy.config_flow import MeridianConfigFlow
-from custom_components.meridian_energy.const import DOMAIN, SENSOR_NAME
+from custom_components.meridian_energy.const import SENSOR_NAME
 
 
 @pytest.mark.unit

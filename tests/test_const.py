@@ -3,7 +3,7 @@
 import pytest
 from homeassistant.const import Platform
 
-from custom_components.meridian_energy.const import DOMAIN, SENSOR_NAME, PLATFORMS
+from custom_components.meridian_energy.const import DOMAIN, PLATFORMS, SENSOR_NAME
 
 
 @pytest.mark.unit
@@ -23,4 +23,3 @@ class TestConstants:
         assert isinstance(PLATFORMS, list)
         assert len(PLATFORMS) > 0
         assert Platform.SENSOR in PLATFORMS
-

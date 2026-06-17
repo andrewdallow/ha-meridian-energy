@@ -1,12 +1,13 @@
 """Tests for the integration initialization module."""
 
+from unittest.mock import AsyncMock, Mock
+
 import pytest
-from unittest.mock import Mock, AsyncMock, patch
 
 from custom_components.meridian_energy import (
+    async_reload_entry,
     async_setup_entry,
     async_unload_entry,
-    async_reload_entry,
 )
 from custom_components.meridian_energy.const import DOMAIN, PLATFORMS
 
@@ -88,4 +89,3 @@ class TestIntegrationSetup:
         # Both should be stored
         assert entry1.entry_id in hass.data[DOMAIN]
         assert entry2.entry_id in hass.data[DOMAIN]
-
